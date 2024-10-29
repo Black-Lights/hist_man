@@ -11,3 +11,7 @@ __pycache__/
 .mypy_cache/
 .pytest_cache/
 .DS_Store
+
+# Other files and folders
+create_struct.py
+.idea
