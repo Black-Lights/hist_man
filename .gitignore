@@ -10,3 +10,4 @@ __pycache__/
 # Cache files
 .mypy_cache/
 .pytest_cache/
+.DS_Store
