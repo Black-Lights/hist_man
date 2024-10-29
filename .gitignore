@@ -10,3 +10,6 @@ __pycache__/
 # Cache files
 .mypy_cache/
 .pytest_cache/
+
+# Other files
+create_struct.py
