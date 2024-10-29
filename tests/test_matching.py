@@ -3,8 +3,8 @@ import rasterio as rio
 from histogram_manipulation import HistogramMatcher
 
 # File paths
-reference_path = "pre_fire.tif"
-secondary_path = "post_fire.tif"
+reference_path = "./histogram_matching_data/pre_fire.tif"
+secondary_path = "./histogram_matching_data/post_fire.tif"
 
 # Initialize the HistogramMatcher
 matcher = HistogramMatcher(secondary_path, reference_path)
