@@ -11,3 +11,6 @@ __pycache__/
 .mypy_cache/
 .pytest_cache/
 .DS_Store
+
+# Other files
+create_struct.py
