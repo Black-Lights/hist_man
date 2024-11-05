@@ -12,6 +12,7 @@ matcher = HistogramMatcher(secondary_path, reference_path)
 # Perform histogram matching
 matcher.match_histogram()
 
+
 # Plot the bands of secondary, reference, and matched images
 matcher.plot_bands(matcher.secondary, "Secondary")
 matcher.plot_bands(matcher.reference, "Reference")

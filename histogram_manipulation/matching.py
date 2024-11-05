@@ -1,9 +1,7 @@
 # matching.py
-
-import rasterio as rio
-from skimage.exposure import match_histograms
-from rasterio.plot import show
 from skimage import exposure
+import rasterio as rio
+from rasterio.plot import show
 import matplotlib.pyplot as plt
 import numpy as np
 
@@ -22,13 +20,47 @@ class HistogramMatcher:
 
         self.file_list = []  # To store paths of individual band files
 
+    def _calculate_cdf(self, hist):
+        """Calculate the cumulative distribution function from a histogram."""
+        cdf = hist.cumsum()
+        if cdf[-1] == 0:
+            return np.zeros_like(cdf)  # Return an array of zeros to avoid division by zero
+        cdf_normalized = cdf / cdf[-1]  # Normalize to range [0, 1]
+        return cdf_normalized
+
+    def _match_histogram_manual(self, source, reference):
+        """Perform manual histogram matching between source and reference arrays."""
+        # Calculate histograms for both source and reference
+        hist_source, bins_source = np.histogram(source.flatten(), bins=256, range=[0, 1], density=True)
+        hist_ref, bins_ref = np.histogram(reference.flatten(), bins=256, range=[0, 1], density=True)
+
+        # Compute the CDF for source and reference
+        cdf_source = self._calculate_cdf(hist_source)
+        cdf_ref = self._calculate_cdf(hist_ref)
+
+        # Create a lookup table to match source values to reference values
+        lookup_table = np.interp(cdf_source, cdf_ref, bins_ref[:-1])
+
+        # Map the source array using the lookup table
+        source_matched = np.interp(source.flatten(), bins_source[:-1], lookup_table)
+        return source_matched.reshape(source.shape)
+
     def match_histogram(self):
         print(f"Secondary raster band count: {self.secondary.shape[0]}")
         print(f"Reference raster band count: {self.reference.shape[0]}")
-        """Perform histogram matching band-by-band."""
+
         for band in range(self.secondary.shape[0]):
-            # Match histogram and save each band separately
-            matched_band = match_histograms(self.secondary[band], self.reference[band], channel_axis=-1)
+            print(f"Processing band {band + 1}")
+            # Normalize input bands to the range [0, 1] for histogram calculations
+            source_norm = (self.secondary[band] - self.secondary[band].min()) / (self.secondary[band].max() - self.secondary[band].min())
+            reference_norm = (self.reference[band] - self.reference[band].min()) / (self.reference[band].max() - self.reference[band].min())
+
+            # Match histogram of the current band
+            matched_band = self._match_histogram_manual(source_norm, reference_norm)
+
+            # Denormalize the matched band back to the original range
+            matched_band = matched_band * (self.secondary[band].max() - self.secondary[band].min()) + self.secondary[band].min()
+
             file_path = f"./histogram_matching_data/fire_rgb_nir_match_{band + 1}.tif"
             self.file_list.append(file_path)
 
@@ -36,7 +68,6 @@ class HistogramMatcher:
             with rio.open(file_path, 'w', **self.metadata_secondary) as dst_band:
                 dst_band.write(matched_band.astype(self.metadata_secondary['dtype']), 1)
 
-        # Combine matched bands into a single multiband file
         self.combine_bands()
 
     def combine_bands(self):
@@ -60,6 +91,7 @@ class HistogramMatcher:
             axarr[i].set_title(f'{title} - Band {i+1}')
             axarr[i].axis('off')
         plt.show()
+
 
     def plot_histograms(self):
         """Plot histograms and CDFs of the secondary, reference, and matched images."""
