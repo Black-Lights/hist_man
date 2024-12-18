@@ -9,8 +9,10 @@ setup(
         'numpy',
         'opencv-python',
         'matplotlib',
+        'rasterio',
+        'scikit-image',
     ],
-    author='Your Name',
+    author='EA',
     description='A library for histogram manipulation of images',
-    url='https://github.com/yourusername/histogram_manipulation',
+    url='https://github.com/Black-Lights/hist_man.git',
 )

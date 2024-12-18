@@ -2,9 +2,8 @@
 
 from .matching import HistogramMatcher
 
-__all__ = ['HistogramMatcher']
-
-
 from .stretching import HistogramStretching
 
-__all__ = ['HistogramStretching']
+from .equalization import HistogramEqualization
+
+__all__ = ['HistogramMatcher', 'HistogramStretching', 'HistogramEqualization']
