@@ -7,6 +7,10 @@ import numpy as np
 
 class HistogramMatcher:
     def __init__(self, secondary_path, reference_path):
+        # Validate file formats
+        self._validate_file_format(secondary_path, "secondary")
+        self._validate_file_format(reference_path, "reference")
+
         # Load the reference and secondary images
         with rio.open(reference_path) as ref:
             self.reference = ref.read()
@@ -19,6 +23,15 @@ class HistogramMatcher:
             self.metadata_secondary.update(compress='deflate')
 
         self.file_list = []  # To store paths of individual band files
+
+    def _validate_file_format(self, file_path, file_type):
+        """Validate that the file is in the correct GeoTIFF format using assertions."""
+        try:
+            with rio.open(file_path) as src:
+                # Assert that the file is a GeoTIFF
+                assert src.driver == "GTiff", f" The {file_type} file '{file_path}' is not a GeoTIFF."
+        except rio.errors.RasterioIOError:
+            assert False, f"The {file_type} file '{file_path}' is not readable or does not exist."
 
     def _calculate_cdf(self, hist):
         """Calculate the cumulative distribution function from a histogram."""
