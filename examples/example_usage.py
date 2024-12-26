@@ -1,11 +1,19 @@
-
 import matplotlib
+
 matplotlib.use('Qt5Agg')  # Use a GUI backend compatible with PyCharm
 import os
 from histogram_manipulation.equalization import HistogramEqualization
 
+
 def main():
-    image_path = '../tests/histogram_equalization_data/single_band_dtm_4326.tif'
+    # Get the directory of the current script
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+
+    # Construct the absolute path to the image
+    image_path = os.path.join(script_dir, '../tests/histogram_equalization_data/single_band_dtm_4326.tif')
+
+    # Normalize the path
+    image_path = os.path.normpath(image_path)
 
     # Check if the file exists
     if not os.path.exists(image_path):
@@ -22,6 +30,7 @@ def main():
         print(f"Error: {e}")
     except ValueError as e:
         print(f"Error: {e}")
+
 
 if __name__ == "__main__":
     main()
