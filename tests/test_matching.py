@@ -24,35 +24,32 @@ matcher.plot_bands(matched_data, "Matched")
 
 # Plot histograms and CDFs for secondary, reference, and matched images
 matcher.plot_histograms()
-# ----------------------------------------------------------------
-# import pytest
-# from histogram_manipulation import HistogramMatcher
-# import rasterio as rio
+
+#----------------------------------------------------------------
+# second test
+
+# # File paths
+# reference_path = "./histogram_matching_data/sample.tiff"
+# secondary_path = "./histogram_matching_data/sample2.tif"
+#
+# # Initialize the HistogramMatcher
+# matcher = HistogramMatcher(secondary_path, reference_path)
 #
 #
-# def test_valid_file_format():
-#     # Test with valid GeoTIFF files
-#     secondary_path = "./histogram_matching_data/post_fire.tif"
-#     reference_path = "./histogram_matching_data/pre_fire.tif"
-#
-#     matcher = HistogramMatcher(secondary_path, reference_path)
-#     assert matcher.secondary is not None
-#     assert matcher.reference is not None
+# # Perform histogram matching
+# matcher.match_histogram()
 #
 #
-# def test_invalid_file_format():
-#     # Test with an invalid file format (e.g., a PNG file)
-#     invalid_file = "./histogram_matching_data/invalid.png"
-#     valid_file = "./histogram_matching_data/pre_fire.tif"
+# # Plot the bands of secondary, reference, and matched images
+# matcher.plot_bands(matcher.secondary, "Secondary")
+# matcher.plot_bands(matcher.reference, "Reference")
 #
-#     with pytest.raises(ValueError, match="The secondary file '.*' is not a GeoTIFF."):
-#         HistogramMatcher(invalid_file, valid_file)
+# with rio.open(matcher.matched_path) as matched_src:
+#     matched_data = matched_src.read()
+# matcher.plot_bands(matched_data, "Matched")
 #
-#
-# def test_nonexistent_file():
-#     # Test with a nonexistent file
-#     nonexistent_file = "./histogram_matching_data/nonexistent_file.tif"
-#     valid_file = "./histogram_matching_data/pre_fire.tif"
-#
-#     with pytest.raises(ValueError, match="The secondary file '.*' is not readable or does not exist."):
-#         HistogramMatcher(nonexistent_file, valid_file)
+# # Plot histograms and CDFs for secondary, reference, and matched images
+# # you can change how much intensity values it shows on histogram the default value is 20000
+# matcher.plot_histograms(xlim = 400)
+
+

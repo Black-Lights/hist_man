@@ -1,3 +1,49 @@
+"""
+Histogram Matching for Geospatial Raster Data
+---------------------------------------------
+
+This module provides a `HistogramMatcher` class for performing histogram matching between a reference raster and a secondary raster.
+The class includes methods to validate input files, normalize raster bands, match histograms manually, and visualize results.
+
+Dependencies:
+- `rasterio`: For reading and writing raster files.
+- `skimage.exposure`: For histogram analysis.
+- `matplotlib.pyplot`: For plotting.
+- `numpy`: For numerical operations.
+
+Classes:
+--------
+HistogramMatcher:
+    A class for histogram matching between a secondary raster and a reference raster.
+
+    Methods:
+    --------
+    __init__(self, secondary_path, reference_path):
+        Initializes the class with paths to the secondary and reference rasters, and validates their formats.
+
+    _validate_file_format(self, file_path, file_type):
+        Ensures that the input files are GeoTIFFs and can be opened.
+
+    _calculate_cdf(self, hist):
+        Computes the cumulative distribution function (CDF) from a histogram.
+
+    _match_histogram_manual(self, source, reference):
+        Manually matches the histogram of a source raster band to a reference raster band.
+
+    match_histogram(self):
+        Matches histograms of all bands in the secondary raster to the corresponding bands in the reference raster.
+
+    combine_bands(self):
+        Combines individually matched bands into a single multiband raster.
+
+    plot_bands(self, image, title):
+        Visualizes individual raster bands with normalized intensity.
+
+    plot_histograms(self):
+        Plots histograms and CDFs for secondary, reference, and matched rasters.
+"""
+
+
 # matching.py
 from skimage import exposure
 import rasterio as rio
@@ -106,23 +152,36 @@ class HistogramMatcher:
         plt.show()
 
 
-    def plot_histograms(self):
-        """Plot histograms and CDFs of the secondary, reference, and matched images."""
+
+    def plot_histograms(self, xlim=20000):
+        """
+        Plot histograms and CDFs of the secondary, reference, and matched images.
+        Handles cases where fewer than four bands are present.
+
+        Parameters:
+        - xlim: int, optional, default=20000
+            The x-axis limit for the plots.
+        """
         with rio.open(self.matched_path) as src:
             matched = src.read()
 
-        fig, axes = plt.subplots(nrows=4, ncols=3, figsize=(10, 10))
+        # Determine the number of bands dynamically
+        num_bands = min(self.secondary.shape[0], 4)  # Use up to 4 bands, if available
+        band_colors = ['red', 'green', 'blue', 'nir'][:num_bands]
+
+        fig, axes = plt.subplots(nrows=num_bands, ncols=3, figsize=(10, num_bands * 2.5))
         images = [self.secondary, self.reference, matched]
         titles = ["Secondary", "Reference", "Matched"]
 
         for i, img in enumerate(images):
-            for c, c_color in enumerate(('red', 'green', 'blue', 'nir')):
+            for c in range(num_bands):  # Loop over the available bands
                 img_hist, bins = exposure.histogram(img[c], source_range='dtype')
-                axes[c, i].plot(bins, img_hist / img_hist.max())
+                axes[c, i].plot(bins, img_hist / img_hist.max(), label="Histogram")
                 img_cdf, bins = exposure.cumulative_distribution(img[c])
-                axes[c, i].plot(bins, img_cdf)
-                axes[c, i].set_xlim([0, 40000])
-                axes[c, 0].set_ylabel(c_color)
+                axes[c, i].plot(bins, img_cdf, label="CDF")
+                axes[c, i].set_xlim([0, xlim])
+                axes[c, i].set_ylabel(band_colors[c])
+                axes[c, i].legend(loc="upper left")
 
         for i, title in enumerate(titles):
             axes[0, i].set_title(title)
