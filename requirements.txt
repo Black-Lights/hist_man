@@ -3,3 +3,6 @@ opencv-python
 matplotlib
 rasterio
 scikit-image
+wheel
+setuptools
+build
