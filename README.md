@@ -39,6 +39,7 @@ pip install histogram-manipulation
 
 
 ## Usage
+# There are some examples in test folder 
 ### Histogram Stretching 
 
 ```python
@@ -68,7 +69,7 @@ stretching.plot_histograms()
 from histogram_manipulation import HistogramMatcher
 
 # Initialize the class with input and reference images
-matcher = HistogramMatcher(reference_path="reference.tif", output_path="matched_output.tif")
+matcher = HistogramMatcher(reference_path="reference.tif", secondary_path="second.tif")
 
 # Apply histogram matching
 matcher.match_histograms()
