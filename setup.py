@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='histogram_manipulation',              # Name of your package
-    version='0.1.0',                            # Initial version
+    version='1.0.0',                            # Updated version
     packages=find_packages(),                   # Automatically find all packages
     install_requires=[
         'affine>=2.4.0',
@@ -35,8 +35,8 @@ setup(
         'tifffile>=2024.9.20',
         'urllib3>=2.2.3',
     ],
-    author='EA',                                # Author name
-    author_email='your.email@example.com',      # Optional email
+    author='Mohammad Ammar Mughees, Seyederfan Eshghollahi',  # List both authors here
+    author_email='mohammadammar.mughees@mail.polimi.it, erfaneshghelahi@gmail.com',  # Separate multiple emails with a comma
     description='A library for histogram manipulation of images',
     long_description=open('README.md').read(),  # Use README as the description
     long_description_content_type='text/markdown',  # Specify markdown format
