@@ -17,6 +17,9 @@ stretcher.save_stretched_image()
 # you can change the default order of bands
 stretcher.plot_rgb(default_bands=(1, 2, 3))
 
+# Plot the Histograms
+stretcher.plot_histograms()
+
 
 # second test multi band
 input_path = "./histogram_stretching_data/multiband_milan_S2.tif"
@@ -33,6 +36,9 @@ stretcher.save_stretched_image()
 # Plot the contrast-stretched RGB image
 stretcher.plot_rgb(default_bands=(3, 2, 1))
 
+# Plot the Histograms
+stretcher.plot_histograms()
+
 
 # first test single band
 input_path = "./histogram_stretching_data/single_band_dtm_4326.tif"
@@ -47,3 +53,6 @@ stretcher.save_stretched_image()
 
 # Plot the contrast-stretched RGB image
 stretcher.plot_singleband()
+
+# Plot the Histograms
+stretcher.plot_histograms()

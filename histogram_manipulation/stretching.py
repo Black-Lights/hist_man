@@ -65,7 +65,15 @@ Class Methods:
     Effects:
         - Displays a side-by-side comparison of a selected band before and after stretching.
         - The band number can be modified within the method.
+
+7. plot_histograms():
+    Plot the histograms of the original and contrast-stretched images.
+
+    Effects:
+        - Displays the histograms of both the original and contrast-stretched images for comparison.
+        - Each histogram shows pixel intensity distribution across all bands.
 """
+
 
 import numpy as np
 import rasterio
@@ -202,6 +210,31 @@ class HistogramStretching:
         plt.imshow(band_image, cmap='gray')
         plt.title(f"Contrast-Stretched Band {band_number}")
         plt.axis('off')  # Hide axes
+        plt.tight_layout()
+        plt.show()
+
+    def plot_histograms(self):
+        """
+        Plot the histograms of the original and contrast-stretched images for all bands.
+        """
+        plt.figure(figsize=(12, 6))
+
+        # Loop through each band and plot histograms
+        for i, (band_data, band_stretched) in enumerate(zip(self.src_data, self.stretched_image)):
+            # Plot original histogram
+            plt.subplot(2, len(self.src_data), i + 1)
+            plt.hist(band_data.ravel(), bins=256, range=[0, 256], color="blue", alpha=0.7)
+            plt.title(f"Original Histogram (Band {i + 1})")
+            plt.xlabel("Pixel Intensity")
+            plt.ylabel("Frequency")
+
+            # Plot stretched histogram
+            plt.subplot(2, len(self.src_data), len(self.src_data) + i + 1)
+            plt.hist(band_stretched.ravel(), bins=256, range=[0, 1], color="green", alpha=0.7)
+            plt.title(f"Stretched Histogram (Band {i + 1})")
+            plt.xlabel("Pixel Intensity")
+            plt.ylabel("Frequency")
+
         plt.tight_layout()
         plt.show()
 

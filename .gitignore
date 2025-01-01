@@ -31,3 +31,7 @@ create_struct.py
 
 # Ignore development notebook files
 histogram_manipulation/equalization_development.ipynb
+histogram_manipulation/stretching_development.ipynb
+
+# Ignore Build Files
+dist/
