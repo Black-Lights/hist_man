@@ -94,7 +94,7 @@ matcher.plot_histograms()
 from histogram_manipulation.equalization import HistogramEqualization
 
 # Initialize the class with the input path
-equalizer = HistogramEqualization(input_path="input.tif")
+equalizer = HistogramEqualization(image_path="input.tif")
 
 # Apply histogram equalization
 equalizer.equalize()
