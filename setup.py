@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='histogram_manipulation',              # Name of your package
-    version='1.0.0',                            # Updated version
+    version='1.1.0',                            # Updated version
     packages=find_packages(),                   # Automatically find all packages
     install_requires=[
         'affine>=2.4.0',
