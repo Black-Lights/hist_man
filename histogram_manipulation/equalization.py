@@ -168,22 +168,33 @@ class HistogramEqualization:
         self.equalized_image = self.cdf[self.image]
         return self.equalized_image
 
-    def save_equalized_image(self, output_path):
+     def save_equalized_image(self, output_path):
         """
         Saves the equalized image to the specified output path.
-
+    
         Args:
             output_path (str): The path where the equalized image will be saved.
         """
+        # Perform histogram equalization if not already done
+        if not hasattr(self, 'equalized_image'):
+            self.equalized_image = self.equalize()
+    
+        # Scale the equalized image to the original data type range
+        equalized_scaled = (self.equalized_image - self.equalized_image.min()) / (
+            self.equalized_image.max() - self.equalized_image.min()
+        ) * 255.0  # Scale to 0-255
+    
         # Save the equalized image
-        with rasterio.open(self.input_path) as src:
+        with rasterio.open(self.image_path) as src:
             meta = src.meta
-
-        meta.update(dtype=rasterio.float32, count=1)
-
+    
+        # Update metadata for the output image
+        meta.update(dtype=rasterio.uint8, count=1)  # Use uint8 for grayscale images
+    
+        # Save the image
         with rasterio.open(output_path, 'w', **meta) as dst:
-            dst.write(self.equalized_image.astype(rasterio.float32), 1)
-
+            dst.write(equalized_scaled.astype(rasterio.uint8), 1)
+    
         print(f"Equalized image saved at {output_path}")
 
     def display_images(self):

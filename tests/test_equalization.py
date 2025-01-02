@@ -50,9 +50,14 @@ def test_histogram_equalization(image_path):
         print(f"Value Error: {e}")
 
 
-if __name__ == "__main__":
-    # Get the directory of the current script
-    script_dir = os.path.dirname(os.path.abspath(__file__))
+if __name__ == "__main__" or "__file__" not in globals():
+    # Determine the script directory
+    if "__file__" in globals():
+        # Running as a regular script
+        script_dir = os.path.dirname(os.path.abspath(__file__))
+    else:
+        # Running in Jupyter Notebook
+        script_dir = os.getcwd()
 
     # Construct the absolute path to the test image
     image_path = os.path.join(
