@@ -36,3 +36,4 @@ histogram_manipulation/stretching_development.ipynb
 
 # Ignore Build Files
 dist/
+build/

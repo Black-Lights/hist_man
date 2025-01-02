@@ -2,6 +2,12 @@
 
 ---
 
+## [1.1.1] - 2025-01-02
+### Fixed
+- Fixed indentation issue in the `equalization` module that caused errors in execution.
+
+---
+
 ## [1.1.0] - 2025-01-02
 ### Added
 - Added support for dual execution environments (regular Python scripts and Jupyter Notebooks) by checking for `__file__` in globals. 

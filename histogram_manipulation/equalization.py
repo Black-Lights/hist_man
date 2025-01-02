@@ -168,7 +168,7 @@ class HistogramEqualization:
         self.equalized_image = self.cdf[self.image]
         return self.equalized_image
 
-     def save_equalized_image(self, output_path):
+    def save_equalized_image(self, output_path):
         """
         Saves the equalized image to the specified output path.
     
